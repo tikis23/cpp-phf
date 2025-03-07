@@ -9,7 +9,7 @@ Values must be know at compile time and cannot be modified at runtime, except fo
 Currently contains only a minimal prototype of `unordered_map`.
 
 ## Usage
-As this is a header-only library, drop `include` folder into your project and include headers that you need.  
+As this is a header-only library, drop `phf` folder into your project and include headers that you need.  
 
 # Example
 Minimal example of usage can be found at `example.cpp`.  

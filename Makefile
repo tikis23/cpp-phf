@@ -1,8 +1,8 @@
 cc = g++
-CXXFLAGS = -std=c++23 -Wall -Wextra -Wpedantic -Iinclude/
+CXXFLAGS = -std=c++23 -Wall -Wextra -Wpedantic -Iphf/include/
 
 # headers included for incremental build
-HEADERS = include/phf/internal/phf.h include/phf/hash.h include/phf/unordered_map.h
+HEADERS = phf/include/phf/internal/phf.h phf/include/phf/hash.h phf/include/phf/unordered_map.h
 SRCS = example.cpp
 
 BINDIR = bin
