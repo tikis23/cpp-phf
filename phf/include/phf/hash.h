@@ -5,40 +5,43 @@
 
 // std::hash does not support constexpr, so we have to implement our own
 namespace phf {
+using hash_type = std::size_t;
+using hash_seed_type = std::size_t;
+
 // only allow specializations
 template <typename T>
 struct hash {
     hash() = delete;
 };
 
-// integral primitives (specialize if sizeof(T) > sizeof(std::size_t) is needed)
+// integral primitives (specialize if sizeof(T) > sizeof(hash_type) is needed)
 template <typename T>
-    requires((std::is_integral_v<T> || std::is_enum_v<T>) && (sizeof(T) <= sizeof(std::size_t)))
+    requires((std::is_integral_v<T> || std::is_enum_v<T>) && (sizeof(T) <= sizeof(hash_type)))
 struct hash<T> {
-    constexpr std::size_t operator()(std::size_t seed, const T& key) const {
-        return seed ^ (static_cast<std::size_t>(key) + 0x9e3779b97f4a7c16 + (seed << 6) + (seed >> 2));
+    constexpr hash_type operator()(hash_seed_type seed, const T& key) const {
+        return seed ^ (static_cast<hash_type>(key) + 0x9e3779b97f4a7c16 + (seed << 6) + (seed >> 2));
     }
 };
 
 // std::string_view
 template <>
 struct hash<std::string_view> {
-    constexpr std::size_t operator()(std::size_t seed, const std::string_view& key) const {
-        const std::size_t fnv_prime = 1099511628211ull;
-        const std::size_t offset = 14695981039346656037ull;
+    constexpr hash_type operator()(hash_seed_type seed, const std::string_view& key) const {
+        const hash_type fnv_prime = 1099511628211ull;
+        const hash_type offset = 14695981039346656037ull;
 
-        std::size_t out = offset;
+        hash_type out = offset;
         for (const auto c : key) {
             out = (out ^ c) * fnv_prime;
         }
-        return hash<std::size_t>{}(seed, out);
+        return hash<hash_type>{}(seed, out);
     }
 };
 
 // concepts
-template <typename T>
+template <typename T> // TODO: allow specialized hash functions
 concept Hashable = requires(T a) {
-    { hash<T>{}(0, a) } -> std::convertible_to<std::size_t>;
+    { hash<T>{}(0, a) } -> std::convertible_to<hash_type>;
 };
 
 } // namespace phf
