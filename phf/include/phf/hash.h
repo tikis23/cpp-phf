@@ -32,11 +32,4 @@ struct hash<std::string_view> {
         return constexpr_xxh3::XXH3_64bits_withSeed_const(key.data(), key.size(), seed);
     }
 };
-
-// concepts
-template <typename T> // TODO: allow specialized hash functions
-concept Hashable = requires(T a) {
-    { hash<T>{}(0, a) } -> std::convertible_to<hash_type>;
-};
-
 } // namespace phf

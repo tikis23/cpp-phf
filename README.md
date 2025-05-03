@@ -23,7 +23,6 @@ From my testing, using strings as keys provides around 1.5x-2.0x speed-up compar
 
 ## Todo
 - tests & more benchmarks
-- more TODO's in the code
 
 ## References
 - http://www.isthe.com/chongo/tech/comp/fnv/#FNV-1a

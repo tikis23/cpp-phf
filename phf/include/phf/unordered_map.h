@@ -8,7 +8,7 @@
 
 namespace phf {
 
-template <Hashable Key, typename Value, std::size_t KeyCount, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>,
+template <typename Key, typename Value, std::size_t KeyCount, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>,
           typename KeyEqual = std::equal_to<Key>>
     requires(MemoryOverheadScale >= 1.0)
 class unordered_map {
@@ -49,8 +49,8 @@ public:
     constexpr ~unordered_map() = default;
     constexpr unordered_map(const unordered_map&) = default;
     constexpr unordered_map(unordered_map&&) = default;
-    constexpr unordered_map& operator=(const unordered_map&) = default; // TODO allow different memory overhead
-    constexpr unordered_map& operator=(unordered_map&&) = default;      // TODO allow different memory overhead
+    constexpr unordered_map& operator=(const unordered_map&) = default;
+    constexpr unordered_map& operator=(unordered_map&&) = default;
 
     constexpr iterator begin() noexcept { return iterator(m_valueArray, m_jumpArray, 0, true); }
     constexpr iterator end() noexcept { return iterator(m_valueArray, m_jumpArray, ArrSize); }
@@ -154,13 +154,13 @@ private:
     jump_arr m_jumpArray;
 };
 
-template <Hashable Key, typename Value, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>,
+template <typename Key, typename Value, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>,
           typename KeyEqual = std::equal_to<Key>, std::size_t KeyCount>
     requires(MemoryOverheadScale >= 1.0)
 constexpr auto make_unordered_map(const std::array<std::pair<Key, Value>, KeyCount>& init) {
     return unordered_map<Key, Value, KeyCount, MemoryOverheadScale, Hash, KeyEqual>(init);
 }
-template <Hashable Key, typename Value, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>,
+template <typename Key, typename Value, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>,
           typename KeyEqual = std::equal_to<Key>, std::size_t KeyCount>
     requires(MemoryOverheadScale >= 1.0)
 constexpr auto make_unordered_map(hash_seed_type startingSeed, const std::array<std::pair<Key, Value>, KeyCount>& init) {

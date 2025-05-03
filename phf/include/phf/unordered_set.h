@@ -8,7 +8,7 @@
 
 namespace phf {
 
-template <Hashable Key, std::size_t KeyCount, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>,
+template <typename Key, std::size_t KeyCount, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>,
           typename KeyEqual = std::equal_to<Key>>
     requires(MemoryOverheadScale >= 1.0)
 class unordered_set {
@@ -38,8 +38,8 @@ public:
     constexpr ~unordered_set() = default;
     constexpr unordered_set(const unordered_set&) = default;
     constexpr unordered_set(unordered_set&&) = default;
-    constexpr unordered_set& operator=(const unordered_set&) = default; // TODO allow different memory overhead
-    constexpr unordered_set& operator=(unordered_set&&) = default;      // TODO allow different memory overhead
+    constexpr unordered_set& operator=(const unordered_set&) = default;
+    constexpr unordered_set& operator=(unordered_set&&) = default;
 
     constexpr const_iterator begin() const noexcept { return const_iterator(m_valueArray, m_jumpArray, 0, true); }
     constexpr const_iterator end() const noexcept { return const_iterator(m_valueArray, m_jumpArray, ArrSize); }
@@ -94,13 +94,13 @@ private:
     jump_arr m_jumpArray;
 };
 
-template <Hashable Key, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>, typename KeyEqual = std::equal_to<Key>,
+template <typename Key, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>, typename KeyEqual = std::equal_to<Key>,
           std::size_t KeyCount>
     requires(MemoryOverheadScale >= 1.0)
 constexpr auto make_unordered_set(const std::array<Key, KeyCount>& init) {
     return unordered_set<Key, KeyCount, MemoryOverheadScale, Hash, KeyEqual>(init);
 }
-template <Hashable Key, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>, typename KeyEqual = std::equal_to<Key>,
+template <typename Key, double MemoryOverheadScale = 1.0, typename Hash = phf::hash<Key>, typename KeyEqual = std::equal_to<Key>,
           std::size_t KeyCount>
     requires(MemoryOverheadScale >= 1.0)
 constexpr auto make_unordered_set(hash_seed_type startingSeed, const std::array<Key, KeyCount>& init) {
