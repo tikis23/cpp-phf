@@ -19,10 +19,8 @@ To run the example, run `make all` to compile it. Output will be found in direct
 
 How to compile & run can be found at `benchmark/README.md`.
 
-From my testing, using strings as keys provides around 1.5x-2.0x speed-up compared to `std::unordered_map` when using `at()`.
-
-## Todo
-- more benchmarks
+From my testing, using strings as keys provides around 1.5x-2.0x speed-up compared to `std::unordered_map` when using `at()`.  
+ `frozen::unordered_map` compares close to `std::unordered_map` when key count is bigger, although it requires less memory, as to compile `phf::unordered_map` in short time it is required to set memory consumption to atleast 24x.
 
 ## References
 - http://www.isthe.com/chongo/tech/comp/fnv/#FNV-1a

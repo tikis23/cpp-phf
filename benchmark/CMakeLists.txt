@@ -11,8 +11,13 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU") # TODO: add MSVC support
     target_compile_options(${PROJECT_NAME} PRIVATE -fconstexpr-ops-limit=2000000000)
 endif()
 
+# phf
 target_include_directories(${PROJECT_NAME} PRIVATE ../phf/include)
 
+# google benchmark
 add_subdirectory(thirdparty/benchmark)
 target_link_libraries(${PROJECT_NAME} benchmark::benchmark_main)
 target_include_directories(${PROJECT_NAME} PRIVATE thirdparty/benchmark/include)
+
+# frozen
+target_include_directories(${PROJECT_NAME} PRIVATE thirdparty/frozen/include)

@@ -1,5 +1,7 @@
 # Usage
 
+If benchmarks take a very long time to compile, increase `PHF_MEMORY_OVERHEAD` at `src/bm_unordered_map_at.cpp`.
+
 to build the benchmarks:
 ```
 cmake -E make_directory "build"
