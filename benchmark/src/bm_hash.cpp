@@ -1,6 +1,6 @@
 #include <benchmark/benchmark.h>
 
-#include "../../phf/include/phf/hash.h"
+#include <phf/hash.h>
 
 #include "gen_data.h"
 

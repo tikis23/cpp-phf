@@ -1,6 +1,6 @@
 #include <benchmark/benchmark.h>
 
-#include "../../phf/include/phf/unordered_map.h"
+#include <phf/unordered_map.h>
 #include <unordered_map>
 
 #include "gen_data.h"
@@ -26,7 +26,6 @@ public:
 };
 template <typename Sz>
 const std::unordered_map<std::string_view, int> UnorderedMap_LongKeys<Sz>::umap_std{test_data.begin(), test_data.end()};
-
 
 BENCHMARK_TEMPLATE_F(UnorderedMap_ShortKeys, At_phf_10, std::integral_constant<std::size_t, 10>)(benchmark::State& state) {
     for (auto _ : state) {

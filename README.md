@@ -22,7 +22,7 @@ How to compile & run can be found at `benchmark/README.md`.
 From my testing, using strings as keys provides around 1.5x-2.0x speed-up compared to `std::unordered_map` when using `at()`.
 
 ## Todo
-- tests & more benchmarks
+- more benchmarks
 
 ## References
 - http://www.isthe.com/chongo/tech/comp/fnv/#FNV-1a
