@@ -41,10 +41,10 @@ public:
     constexpr unordered_set& operator=(const unordered_set&) = default;
     constexpr unordered_set& operator=(unordered_set&&) = default;
 
-    constexpr const_iterator begin() const noexcept { return const_iterator(m_valueArray, m_jumpArray, 0, true); }
-    constexpr const_iterator end() const noexcept { return const_iterator(m_valueArray, m_jumpArray, ArrSize); }
-    constexpr const_iterator cbegin() const noexcept { return const_iterator(m_valueArray, m_jumpArray, 0, true); }
-    constexpr const_iterator cend() const noexcept { return const_iterator(m_valueArray, m_jumpArray, ArrSize); }
+    constexpr const_iterator begin() const noexcept { return const_iterator(&m_valueArray, &m_jumpArray, 0, true); }
+    constexpr const_iterator end() const noexcept { return const_iterator(&m_valueArray, &m_jumpArray, ArrSize); }
+    constexpr const_iterator cbegin() const noexcept { return const_iterator(&m_valueArray, &m_jumpArray, 0, true); }
+    constexpr const_iterator cend() const noexcept { return const_iterator(&m_valueArray, &m_jumpArray, ArrSize); }
 
     constexpr bool empty() const noexcept { return KeyCount == 0; }
     constexpr size_type size() const noexcept { return KeyCount; }
@@ -63,7 +63,7 @@ public:
         if (!key_equal{}(m_valueArray[index], x)) {
             return end();
         }
-        return const_iterator(m_valueArray, m_jumpArray, index);
+        return const_iterator(&m_valueArray, &m_jumpArray, index);
     }
     template <class K>
     constexpr bool contains(const K& x) const {

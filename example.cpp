@@ -3,6 +3,9 @@
 #include <phf/unordered_map.h>
 #include <phf/unordered_set.h>
 
+#include <algorithm>
+#include <ranges>
+
 int main() {
     // map
     constexpr phf::unordered_map<int, int, 5, 4.0> map({
@@ -41,8 +44,8 @@ int main() {
         std::print("    {}\n", p);
     }
     std::print("Contains 3: {}\n", set.contains(3));
-    std::print("Contains 6: {}\n", set.contains(6));
+    std::print("Contains 6: {}\n", std::ranges::contains(set, 6));
 
-    constexpr phf::unordered_set<int, 5> set2({5, 4, 3, 2, 1});
+    constexpr auto set2 = phf::make_unordered_set<int, 1.0>(std::array{5, 4, 3, 2, 1});
     std::print("Sets equal: {}\n", set == set2);
 }

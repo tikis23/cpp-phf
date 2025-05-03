@@ -85,11 +85,14 @@ static constexpr JumpArr initJumpArray(hash_seed_type seed, const InitArr& init)
 template <typename T, std::size_t N, bool IsConst>
 class SparseIterator {
 public:
+    using difference_type = std::ptrdiff_t;
+    using value_type = T;
     using data_array = std::conditional_t<IsConst, const std::array<T, N>, std::array<T, N>>;
 
-    constexpr SparseIterator(data_array& data, const std::array<IteratorJumpType, N>& jump, std::size_t pos, bool goToValid = false)
+    constexpr SparseIterator() = default;
+    constexpr SparseIterator(data_array* data, const std::array<IteratorJumpType, N>* jump, std::size_t pos, bool goToValid = false)
         : m_data(data), m_jump(jump), m_pos(pos) {
-        if (goToValid && m_jump[m_pos] != 0) {
+        if (goToValid && (*m_jump)[m_pos] != 0) {
             operator++();
         }
     }
@@ -97,22 +100,22 @@ public:
     constexpr T& operator*()
         requires(!IsConst)
     {
-        return m_data[m_pos];
+        return (*m_data)[m_pos];
     }
-    constexpr const T& operator*() const { return m_data[m_pos]; }
+    constexpr const T& operator*() const { return (*m_data)[m_pos]; }
 
     constexpr T* operator->()
         requires(!IsConst)
     {
-        return &m_data[m_pos];
+        return &(*m_data)[m_pos];
     }
-    constexpr const T* operator->() const { return &m_data[m_pos]; }
+    constexpr const T* operator->() const { return &(*m_data)[m_pos]; }
 
     constexpr SparseIterator& operator++() {
         do {
-            auto jumpCount = m_jump[m_pos];
+            auto jumpCount = (*m_jump)[m_pos];
             m_pos += jumpCount ? jumpCount : 1;
-        } while (m_pos < N && m_jump[m_pos] != 0);
+        } while (m_pos < N && (*m_jump)[m_pos] != 0);
         return *this;
     }
     constexpr SparseIterator operator++(int) {
@@ -140,8 +143,8 @@ public:
     constexpr bool operator==(const SparseIterator& other) const { return m_pos == other.m_pos; }
 
 private:
-    data_array& m_data;
-    const std::array<IteratorJumpType, N>& m_jump;
+    data_array* m_data;
+    const std::array<IteratorJumpType, N>* m_jump;
     std::size_t m_pos;
 };
 
