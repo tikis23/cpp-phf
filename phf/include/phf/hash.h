@@ -3,10 +3,12 @@
 #include <string_view>
 #include <type_traits>
 
+#include "internal/constexpr-xxh3.h"
+
 // std::hash does not support constexpr, so we have to implement our own
 namespace phf {
-using hash_type = std::size_t;
-using hash_seed_type = std::size_t;
+using hash_type = uint64_t;
+using hash_seed_type = uint64_t;
 
 // only allow specializations
 template <typename T>
@@ -27,14 +29,7 @@ struct hash<T> {
 template <>
 struct hash<std::string_view> {
     constexpr hash_type operator()(hash_seed_type seed, const std::string_view& key) const {
-        const hash_type fnv_prime = 1099511628211ull;
-        const hash_type offset = 14695981039346656037ull;
-
-        hash_type out = offset;
-        for (const auto c : key) {
-            out = (out ^ c) * fnv_prime;
-        }
-        return hash<hash_type>{}(seed, out);
+        return constexpr_xxh3::XXH3_64bits_withSeed_const(key.data(), key.size(), seed);
     }
 };
 

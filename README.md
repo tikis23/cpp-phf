@@ -19,12 +19,12 @@ To run the example, run `make all` to compile it. Output will be found in direct
 
 How to compile & run can be found at `benchmark/README.md`.
 
-From my testing, using short strings as keys provides ~2x speed-up compared to `std::unordered_map` when using `at()`, while using long keys makes `phf::unordered_map` ~7-8x slower. Using faster hash algorithms should make it faster like with short keys. 
+From my testing, using strings as keys provides around 1.5x-2.0x speed-up compared to `std::unordered_map` when using `at()`.
 
 ## Todo
 - tests & more benchmarks
-- optimizations (use faster hash algorithms)
 - more TODO's in the code
 
 ## References
 - http://www.isthe.com/chongo/tech/comp/fnv/#FNV-1a
+- https://github.com/chys87/constexpr-xxh3
